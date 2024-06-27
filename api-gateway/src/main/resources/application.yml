@@ -1,0 +1,15 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: hapi-fhir
+          uri: http://hapi-fhir:8080/
+          predicates:
+            - Path=/fhir/**
+        - id: ehrbase
+          uri: http://ehrbase:8080/
+          predicates:
+            - Path=/ehrbase/**

@@ -1,0 +1,67 @@
+services:
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    environment:
+      POSTGRES_USER: medblock
+      POSTGRES_PASSWORD: medblock
+      POSTGRES_DB: medblock
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./postgresql:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    networks:
+      - local
+
+  hapi-fhir:
+    image: hapiproject/hapi:latest
+    container_name: hapi-fhir
+    configs:
+      - source: hapi
+        target: /app/config/application.yaml
+    depends_on:
+      - postgres
+    ports:
+      - "8081:8080"
+    networks:
+      - local
+
+  ehrbase:
+    image: ehrbase/ehrbase:latest
+    container_name: ehrbase
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/medblock
+      SPRING_DATASOURCE_USERNAME: medblock
+      SPRING_DATASOURCE_PASSWORD: medblock
+      DB_USER_ADMIN: medblock
+      DB_PASS_ADMIN: medblock
+      SPRING_PROFILES_ACTIVE: local
+      SERVER_AQLCONFIG_JSQUERY: "false"
+    depends_on:
+      - postgres
+    ports:
+      - "8082:8080"
+    networks:
+      - local
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    depends_on:
+      - hapi-fhir
+      - ehrbase
+    ports:
+      - "8080:8080"
+    networks:
+      - local
+
+volumes:
+  postgres_data:
+configs:
+  hapi:
+    file: ./hapi.application.yaml
+
+networks:
+  local:
+    driver: bridge

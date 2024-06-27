@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url: "jdbc:postgresql://localhost:5432/medblock"
+    username: medblock
+    password: medblock
+    driverClassName: org.postgresql.Driver
+  jpa:
+    properties:
+      hibernate.dialect: ca.uhn.fhir.jpa.model.dialect.HapiFhirPostgresDialect
+      hibernate.search.enabled: false
