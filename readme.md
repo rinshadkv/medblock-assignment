@@ -6,7 +6,7 @@ This project integrates EHRbase and HAPI FHIR services into a single Dockerized 
 1. [Prerequisites](#Prerequisites)
 2. [Microservices](#microservices) :
     * [EHRbase](#EHRbase)
-    * [HAPI FHIR](#discussion-service)
+    * [HAPI FHIR](#HAPI-FHIR)
     * [API Gateway](#api-gateway)
 3. [Installation](#installation)
 4. [Tech Stack](#tech-stack)
@@ -24,11 +24,11 @@ This project integrates EHRbase and HAPI FHIR services into a single Dockerized 
 ### EHRbase
 
 
-used EHRbase offical docker image and run it on a container and expose 8080 
+used EHRbase official docker image and run it on a container and expose 8080 
 
 ### HAPI FHIR
 
-used HAPI FHIR offical docker image and run it on a container and expose  8080
+used HAPI FHIR official docker image and run it on a container and expose  8080
 
 ### API Gateway
 
@@ -61,29 +61,37 @@ https://github.com/rinshadkv/medblock-assignment.git
 3. Navigate to the root directory of the project.
 
 ```
-cd /medblock
+cd /medblock-assignment/api-gateway
 ```
 
-4. Open a terminal window.
+4. build api-gateway service
+  ```
+./mvnw clean package
+```
+  this will create a .jar file for run the application
+5.  back to root directory
+ ```
+cd ..
+```
+6. Open a terminal window.
 
-5. Run the following command to build and start the Docker containers:
+7. Run the following command to build and start the Docker containers:
 
 ```
 docker-compose up --build
 ```
 
 This command will build the Docker images for each service and start the containers defined in the `docker-compose.yml`
-file.
+file. this will takes time in initial bootup
 
-6. Once the containers are up and running, you can access the APIs provided by the User Service on port 8000/users,
-   and Discussion Service On port 8000/discussion.
+8. Once the containers are up and running, you can access the APIs on
 
 - ehrbase Service API:http://localhost:8080/ehrbase/swagger-ui/index.html
 - hapi fhir  Service: http://localhost:8080/fhir/metadata
 
-7. You can also interact with the PostgreSQL database directly on port 5432 .
+9. You can also interact with the PostgreSQL database directly on port 5432 .
 
-8. To stop the containers, press `Ctrl + C` in the terminal where they are running, and then run the following command
+10. To stop the containers, press `Ctrl + C` in the terminal where they are running, and then run the following command
    to remove the containers:
 
 
